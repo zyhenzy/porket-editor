@@ -11,44 +11,44 @@ const devConfig = {
     },
     module: {
         rules: [
-            {
-                test: /.s[ac]ss$/,
-                exclude: /.min.css$/,
-                use: [
-                    { loader: 'style-loader' },
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            modules: {
-                                mode: "global"
-                            }
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    [
-                                        'postcss-preset-env',
-                                        {
-                                            // 其他选项
-                                        },
-                                    ],
-                                ],
-                            },
-                        },
-                    },
-                    { loader: 'sass-loader' }
-                ]
-            },
-            {
-                test: /.min.css$/,
-                use: [
-                    { loader: 'style-loader' },
-                    { loader: 'css-loader' }
-                ]
-            }
+            // {
+            //     test: /.s[ac]ss$/,
+            //     exclude: /.min.css$/,
+            //     use: [
+            //         { loader: 'style-loader' },
+            //         {
+            //             loader: 'css-loader',
+            //             options: {
+            //                 modules: {
+            //                     mode: "global"
+            //                 }
+            //             }
+            //         },
+            //         {
+            //             loader: 'postcss-loader',
+            //             options: {
+            //                 postcssOptions: {
+            //                     plugins: [
+            //                         [
+            //                             'postcss-preset-env',
+            //                             {
+            //                                 // 其他选项
+            //                             },
+            //                         ],
+            //                     ],
+            //                 },
+            //             },
+            //         },
+            //         { loader: 'sass-loader' }
+            //     ]
+            // },
+            // {
+            //     test: /.min.css$/,
+            //     use: [
+            //         { loader: 'style-loader' },
+            //         { loader: 'css-loader' }
+            //     ]
+            // }
         ]
     },
     devServer: {
