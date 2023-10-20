@@ -1,7 +1,7 @@
 import React from "react"
 import {createRoot} from 'react-dom/client';
-// import PorketEditor from '../../src/index'; // 引入组件
-import PorketEditor from 'porket-editor'; // 引入node-modules中的组件
+import PorketEditor from '../../src/index'; // 引入组件
+// import PorketEditor from 'porket-editor'; // 引入node-modules中的组件
 
 
 const App = () => {

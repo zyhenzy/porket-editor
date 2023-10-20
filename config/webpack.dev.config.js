@@ -1,5 +1,5 @@
 const path = require('path');
-const { merge } = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const baseConfig = require('./webpack.base.js'); // 公共配置
 
 const devConfig = {
@@ -15,7 +15,7 @@ const devConfig = {
             //     test: /.s[ac]ss$/,
             //     exclude: /.min.css$/,
             //     use: [
-            //         { loader: 'style-loader' },
+            //         {loader: 'style-loader'},
             //         {
             //             loader: 'css-loader',
             //             options: {
@@ -39,14 +39,14 @@ const devConfig = {
             //                 },
             //             },
             //         },
-            //         { loader: 'sass-loader' }
+            //         {loader: 'sass-loader'}
             //     ]
             // },
             // {
             //     test: /.min.css$/,
             //     use: [
-            //         { loader: 'style-loader' },
-            //         { loader: 'css-loader' }
+            //         {loader: 'style-loader'},
+            //         {loader: 'css-loader'}
             //     ]
             // }
         ]
