@@ -12,35 +12,31 @@ const devConfig = {
     module: {
         rules: [
             {
-                test: /.s[ac]ss$/,
-                exclude: /.min.css$/,
+                test: /\.module\.css$/,
                 use: [
-                    { loader: 'style-loader' },
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true, // 启用 CSS 模块
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.module\.scss$/,
+                use: [
+                    'style-loader',
                     {
                         loader: 'css-loader',
                         options: {
                             modules: {
-                                mode: "global"
-                            }
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    [
-                                        'postcss-preset-env',
-                                        {
-                                            // 其他选项
-                                        },
-                                    ],
-                                ],
+                                localIdentName: '[name]__[local]--[hash:base64:5]', // 自定义类名生成规则
                             },
                         },
                     },
-                    { loader: 'sass-loader' }
-                ]
+                    'sass-loader',
+                ],
             },
             {
                 test: /.min.css$/,

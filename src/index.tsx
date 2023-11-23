@@ -1,5 +1,5 @@
 import React from 'react';
-import './index.scss';
+import styles from './index.module.scss';
 
 interface PorketEditorProps {
     children: string;  // 要绘制的文本
@@ -14,7 +14,7 @@ const PorketEditor = (props: PorketEditorProps) => {
     const { children = '' } = props;
 
     return (
-        <div className="abc">{children}</div>
+        <div className={styles.abc}>{children}</div>
     )
 }
 

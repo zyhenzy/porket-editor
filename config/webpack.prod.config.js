@@ -23,8 +23,8 @@ const prodConfig = {
                         loader: 'css-loader',
                         options: {
                             modules: {
-                                mode: "global"
-                            }
+                                localIdentName: '[name]__[local]--[hash:base64:5]', // 自定义类名生成规则
+                            },
                         }
                     },
                     {
