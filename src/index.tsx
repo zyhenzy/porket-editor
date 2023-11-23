@@ -13,7 +13,7 @@ const PorketEditor = (props: PorketEditorProps) => {
     const { children = '' } = props;
 
     return (
-        <div style={{color:'yellowgreen'}}>{children}</div>
+        <div style={{color:'blue'}}>{children}</div>
     )
 }
 
