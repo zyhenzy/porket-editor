@@ -1,14 +1,14 @@
 import React from "react"
 import { createRoot } from 'react-dom/client';
-// import PorketEditor from '../../src/index'; // 引入组件
+import PorketEditor from '../../src/index'; // 引入组件
 import './index.scss';
-import PorketEditor from 'porket-editor';
+// import PorketEditor from 'porket-editor';
+// import "porket-editor/lib/index.min.css";
 
 const App = () => {
     return (
         <div className="container">
             <div className="style3">
-                666
                 <PorketEditor>my name is porket editor</PorketEditor>
             </div>
         </div>
