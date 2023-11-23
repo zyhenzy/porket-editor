@@ -1,9 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react'
 import styles from './index.module.scss';
+import {createEditor} from 'slate'
+import {Slate, Editable, withReact} from 'slate-react'
 
 interface PorketEditorProps {
     children: string;  // 要绘制的文本
 }
+
+const initialValue = [
+    {
+        type: 'paragraph',
+        children: [{text: 'A line of text in a paragraph.'}],
+    },
+]
 
 /**
  * 文本宽度自适应标签组件
@@ -11,10 +20,13 @@ interface PorketEditorProps {
  * @constructor
  */
 const PorketEditor = (props: PorketEditorProps) => {
-    const { children = '' } = props;
-
+    const [editor] = useState(() => withReact(createEditor()))
     return (
-        <div className={styles.abc}>{children}</div>
+        <>
+            <Slate editor={editor} initialValue={initialValue}>
+                <Editable className={styles.porketEditor}/>
+            </Slate>
+        </>
     )
 }
 
