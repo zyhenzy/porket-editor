@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface WidthAutoLabelProps {
+interface PorketEditorProps {
     children: string;  // 要绘制的文本
 }
 
@@ -9,7 +9,7 @@ interface WidthAutoLabelProps {
  * @param props
  * @constructor
  */
-const WidthAutoLabel = (props: WidthAutoLabelProps) => {
+const PorketEditor = (props: PorketEditorProps) => {
     const { children = '' } = props;
 
     return (
@@ -17,4 +17,4 @@ const WidthAutoLabel = (props: WidthAutoLabelProps) => {
     )
 }
 
-export default WidthAutoLabel;
+export default PorketEditor;

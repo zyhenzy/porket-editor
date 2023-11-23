@@ -1,14 +1,14 @@
 import React from "react"
 import { createRoot } from 'react-dom/client';
-// import WidthAutoLabel from '../../src/index'; // 引入组件
+// import PorketEditor from '../../src/index'; // 引入组件
 import './index.scss';
-import WidthAutoLabel from 'porket-editor';
+import PorketEditor from 'porket-editor';
 
 const App = () => {
     return (
         <div className="container">
             <div className="style3">
-                <WidthAutoLabel>my name is porket editor</WidthAutoLabel>
+                <PorketEditor>my name is porket editor</PorketEditor>
             </div>
         </div>
     );
