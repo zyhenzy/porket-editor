@@ -1,7 +1,10 @@
 import React, {useState} from 'react'
 import styles from './index.module.scss';
-import {createEditor} from 'slate'
+import {createEditor, Transforms} from 'slate'
 import {Slate, Editable, withReact} from 'slate-react'
+import {withHistory} from 'slate-history'
+import withTrace from "./plugins/withTrace";
+import Toolbar from "./components/toolbar/toolbar";
 
 interface PorketEditorProps {
     children: string;  // 要绘制的文本
@@ -20,13 +23,15 @@ const initialValue = [
  * @constructor
  */
 const PorketEditor = (props: PorketEditorProps) => {
-    const [editor] = useState(() => withReact(createEditor()))
+    const [editor] = useState(() => withReact(withHistory(withTrace(createEditor()))))
+
     return (
-        <>
+        <div>
+            <Toolbar editor={editor}/>
             <Slate editor={editor} initialValue={initialValue}>
                 <Editable className={styles.porketEditor}/>
             </Slate>
-        </>
+        </div>
     )
 }
 
