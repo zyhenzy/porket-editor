@@ -5,6 +5,7 @@ import {Slate, Editable, withReact} from 'slate-react'
 import {withHistory} from 'slate-history'
 import withTrace from "./plugins/withTrace";
 import Toolbar from "./components/toolbar/toolbar";
+import ContextMenu from "./components/contextMenu/contextMenu";
 
 interface PorketEditorProps {
     children: string;  // 要绘制的文本
@@ -29,6 +30,7 @@ const PorketEditor = (props: PorketEditorProps) => {
         <div>
             <Toolbar editor={editor}/>
             <Slate editor={editor} initialValue={initialValue}>
+                <ContextMenu editor={editor}/>
                 <Editable className={styles.porketEditor}/>
             </Slate>
         </div>
