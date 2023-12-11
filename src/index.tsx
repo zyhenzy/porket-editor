@@ -7,6 +7,7 @@ import withTrace from "./plugins/withTrace";
 import Toolbar from "./components/toolbar/toolbar";
 import ContextMenu from "./components/contextMenu/contextMenu";
 import Leaf from "./render/Leaf";
+import HoveringToolbar from "./components/hoveringToolbar/hoveringToolbar";
 
 interface PorketEditorProps {
     children: string;  // 要绘制的文本
@@ -32,6 +33,7 @@ const PorketEditor = (props: PorketEditorProps) => {
         <div>
             <Toolbar editor={editor}/>
             <Slate editor={editor} initialValue={initialValue}>
+                <HoveringToolbar/>
                 <ContextMenu/>
                 <Editable className={styles.porketEditor} renderLeaf={renderLeaf}/>
             </Slate>

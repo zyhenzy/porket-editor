@@ -4,10 +4,7 @@ import ReactDOM from "react-dom";
 import styles from "./contextMenu.module.scss";
 import React from "react";
 import {HistoryEditor} from "slate-history";
-import type {IMenu} from "./contextMenu.config";
 import {menus} from "./contextMenu.config";
-import {useSlate} from "slate-react";
-import {isMarkActive, toggleMark} from "../../utils";
 
 interface ContextMenuProps {
     // editor: HistoryEditor;
@@ -30,7 +27,6 @@ const ContextMenu: FC<ContextMenuProps> = () => {
         }
     }, [])
 
-    // 显示菜单
     const showMenu = (event: MouseEvent) => {
         event.preventDefault()
         setTop(event.pageY)
@@ -43,36 +39,34 @@ const ContextMenu: FC<ContextMenuProps> = () => {
         setVisible(false)
     }
 
+    /**
+     * 点击菜单项
+     * @param menu
+     * @param event
+     */
+    const handleMenuClick = (menu: { title: string; value: any }, event: React.MouseEvent<HTMLDivElement>) => {
+        console.log(menu)
+    }
+
     return ReactDOM.createPortal(
         <div
             className={styles.contextMenu}
             style={{
                 display: visible ? "flex" : "none",
-                left: `${left - 120}px`,
-                top: `${top - 45}px`,
+                left: `${left}px`,
+                top: `${top}px`,
             }}
         >
             {menus.map(i => {
-                return <MarkButton {...i}/>
+                return <div
+                    className={styles.menuItem}
+                    key={i.value}
+                    onClick={(event) => handleMenuClick(i, event)}
+                >{i.title}</div>
             })}
         </div>,
         document.body
     );
 };
-
-const MarkButton = (menu: IMenu) => {
-    const editor = useSlate()
-    const className = `${styles.menuItem} ${isMarkActive(editor,menu.format)?styles.menuItemActive:''}`;
-    return (
-        <div
-            key={menu.format}
-            className={className}
-            onMouseDown={event => {
-                event.preventDefault()
-                toggleMark(editor, menu.format)
-            }}
-        >{menu.title}</div>
-    )
-}
 
 export default ContextMenu

@@ -1,0 +1,32 @@
+.hoveringToolbar {
+  position: fixed;
+  z-index: 87;
+  border: 1px solid #dee0e3;
+  background-color: #fff;
+  box-sizing: border-box;
+  box-shadow: rgba( 31,35,41 ,0.1);
+  border-radius: 6px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  .menuItem{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 20px;
+    width: 28px;
+    height: 28px;
+    margin: 4px;
+    &:hover{
+      background-color: #dee0e3;
+    }
+  }
+  .menuItemActive{
+    background-color: aquamarine;
+    &:hover{
+      background-color: aquamarine;
+    }
+  }
+}

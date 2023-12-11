@@ -1,12 +1,12 @@
 export interface IMenu {
     title:string,
-    format:string
+    value:string
 }
 
 export const menus:IMenu[] = [
-    {title:'B',format:'bold'},
-    {title:'S',format:'italic'},
-    {title:'I',format:'underline'},
-    {title:'U',format:'code'}
+    {title:'B',value:'bold'},
+    {title:'S',value:'italic'},
+    {title:'I',value:'underline'},
+    {title:'U',value:'code'}
 ]
 
