@@ -1,6 +1,12 @@
-const menus = [
-    {title:'功能A',value:'funcA'},
-    {title:'功能B',value:'funcB'}
+export interface IMenu {
+    title:string,
+    format:string
+}
+
+export const menus:IMenu[] = [
+    {title:'B',format:'bold'},
+    {title:'S',format:'italic'},
+    {title:'I',format:'underline'},
+    {title:'U',format:'code'}
 ]
 
-export default menus
