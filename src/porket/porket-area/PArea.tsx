@@ -1,11 +1,12 @@
 import React from 'react'
+import styles from './PArea.module.scss'
 
-const CodeElement = (props: any) => {
+const PArea = (props: any) => {
     return (
-        <pre {...props.attributes}>
-            <code>{props.children}</code>
-        </pre>
+        <div className={styles.PArea}>
+            <span>{props.children}</span>
+        </div>
     )
 }
 
-export default CodeElement;
+export default PArea;

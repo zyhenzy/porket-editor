@@ -72,7 +72,7 @@ const HoveringToolbar: FC<ContextMenuProps> = () => {
             }}
         >
             {hoverToolbar.map(i => {
-                return <MarkButton {...i}/>
+                return <MarkButton key={i.format} {...i}/>
             })}
         </div>,
         document.body

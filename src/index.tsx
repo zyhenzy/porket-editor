@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react'
 import styles from './index.module.scss';
-import {createEditor, Transforms,Range} from 'slate'
+import {createEditor, Transforms, Range} from 'slate'
 import {Slate, Editable, withReact} from 'slate-react'
 import {withHistory} from 'slate-history'
 import withTrace from "./plugins/withTrace";
@@ -10,7 +10,7 @@ import Leaf from "./render/Leaf";
 import Element from "./render/Element";
 import HoveringToolbar from "./components/hoveringToolbar/hoveringToolbar";
 import withInput from "./porket/porket-input/input-plugin";
-import { isKeyHotkey } from 'is-hotkey'
+import {isKeyHotkey} from 'is-hotkey'
 
 interface PorketEditorProps {
     children: string;  // 要绘制的文本
@@ -25,12 +25,27 @@ const initialValue = [
                 type: 'input',
                 children: [{text: 'abc'}],
             },
-            {text:''}
+            {text: ''}
         ],
     },
     {
-        type: 'code',
+        type: 'paragraph',
         children: [{text: 'abc'}],
+    },
+    {
+        type: 'area',
+        children: [
+            {
+                type: 'paragraph', children: [
+                    {text: 'abc'}
+                ]
+            }
+        ]
+    },
+    {
+        type: 'paragraph', children: [
+            {text: ''}
+        ]
     }
 ]
 
@@ -46,7 +61,7 @@ const PorketEditor = (props: PorketEditorProps) => {
 
     // 处理inline节点光标左移、右移跳转问题
     const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = event => {
-        const { selection } = editor
+        const {selection} = editor
 
         // Default left/right behavior is unit:'character'.
         // This fails to distinguish between two cursor positions, such as
@@ -55,15 +70,15 @@ const PorketEditor = (props: PorketEditorProps) => {
         // This lets the user step into and out of the inline without stepping over characters.
         // You may wish to customize this further to only use unit:'offset' in specific cases.
         if (selection && Range.isCollapsed(selection)) {
-            const { nativeEvent } = event
+            const {nativeEvent} = event
             if (isKeyHotkey('left', nativeEvent)) {
                 event.preventDefault()
-                Transforms.move(editor, { unit: 'offset', reverse: true })
+                Transforms.move(editor, {unit: 'offset', reverse: true})
                 return
             }
             if (isKeyHotkey('right', nativeEvent)) {
                 event.preventDefault()
-                Transforms.move(editor, { unit: 'offset' })
+                Transforms.move(editor, {unit: 'offset'})
                 return
             }
         }
@@ -75,7 +90,8 @@ const PorketEditor = (props: PorketEditorProps) => {
             <Slate editor={editor} initialValue={initialValue}>
                 <HoveringToolbar/>
                 <ContextMenu/>
-                <Editable className={styles.porketEditor} renderLeaf={renderLeaf} renderElement={renderElement} onKeyDown={onKeyDown}/>
+                <Editable className={styles.porketEditor} renderLeaf={renderLeaf} renderElement={renderElement}
+                          onKeyDown={onKeyDown}/>
             </Slate>
         </div>
     )

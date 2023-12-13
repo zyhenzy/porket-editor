@@ -1,10 +1,13 @@
 import {FC, useEffect, useState} from "react";
-import {Editor, Path} from "slate";
+import {createEditor, Editor, Path} from "slate";
 import ReactDOM from "react-dom";
 import styles from "./contextMenu.module.scss";
 import React from "react";
 import {HistoryEditor} from "slate-history";
 import {menus} from "./contextMenu.config";
+import type {IMenu} from "./contextMenu.config";
+import {PEditor} from "../../porket";
+import {useSlate} from "slate-react";
 
 interface ContextMenuProps {
     // editor: HistoryEditor;
@@ -15,6 +18,7 @@ const ContextMenu: FC<ContextMenuProps> = () => {
     const [visible, setVisible] = useState(false);
     const [top, setTop] = useState(-9999)
     const [left, setLeft] = useState(-9999)
+    const editor = useSlate()
 
     useEffect(() => {
         // 右键事件监听
@@ -44,8 +48,15 @@ const ContextMenu: FC<ContextMenuProps> = () => {
      * @param menu
      * @param event
      */
-    const handleMenuClick = (menu: { title: string; value: any }, event: React.MouseEvent<HTMLDivElement>) => {
-        console.log(menu)
+    const handleMenuClick = ({value}: IMenu, event: React.MouseEvent<HTMLDivElement>) => {
+        switch (value) {
+            case 'add-area':
+                PEditor.addArea(editor)
+                break;
+            case 'add-input':
+                PEditor.addInput(editor)
+                break;
+        }
     }
 
     return ReactDOM.createPortal(
