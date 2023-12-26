@@ -1,4 +1,4 @@
-import {Editor, Range, Transforms, Element} from 'slate'
+import {Editor, Range, Transforms, Element,Node} from 'slate'
 import {HistoryEditor} from "slate-history";
 import {AreaElement, InputElement} from "./porket-types";
 
@@ -50,6 +50,17 @@ export const PEditor = {
             Transforms.wrapNodes(editor, input, {split: true})
             Transforms.collapse(editor, {edge: 'end'})
         }
+    },
+    /**
+     * 测试Descendants函数
+     * @param editor
+     */
+    test(editor:Editor){
+        const g = Node.descendants(editor,{
+            // @ts-ignore
+            pass: ([node]) => node.type === 'area'
+        })
+        console.log(Array.from(g))
     },
     /**
      * 撤销功能

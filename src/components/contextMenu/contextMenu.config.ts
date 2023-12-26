@@ -8,6 +8,7 @@ export const menus:IMenu[] = [
     {title:'插入文本控件',value:'add-input'},
     {title:'S',value:'italic'},
     {title:'I',value:'underline'},
-    {title:'U',value:'code'}
+    {title:'U',value:'code'},
+    {title:'测试函数',value:'test'},
 ]
 

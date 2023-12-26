@@ -89,9 +89,12 @@ const PorketEditor = (props: PorketEditorProps) => {
             <Toolbar editor={editor}/>
             <Slate editor={editor} initialValue={initialValue}>
                 <HoveringToolbar/>
-                <ContextMenu/>
-                <Editable className={styles.porketEditor} renderLeaf={renderLeaf} renderElement={renderElement}
-                          onKeyDown={onKeyDown}/>
+                <div>
+                    <ContextMenu/>
+                    <Editable className={styles.porketEditor} renderLeaf={renderLeaf} renderElement={renderElement}
+                              onKeyDown={onKeyDown}/>
+                </div>
+
             </Slate>
         </div>
     )
