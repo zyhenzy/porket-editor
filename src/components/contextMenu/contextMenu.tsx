@@ -18,6 +18,8 @@ const ContextMenu: FC<ContextMenuProps> = () => {
     const [visible, setVisible] = useState(false);
     const [top, setTop] = useState(-9999)
     const [left, setLeft] = useState(-9999)
+    // const [toLeft,setToLeft] = useState(false) // 菜单偏左显示
+    // const [toTop,setToTop] = useState(false) // 菜单偏上显示
     const editor = useSlate()
     const menuRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
@@ -43,13 +45,20 @@ const ContextMenu: FC<ContextMenuProps> = () => {
             // 而 layerX 的计算方式可能会受到鼠标指针相对于事件元素的祖先元素的影响。
             const rect = parentEl.getBoundingClientRect();
             const offsetX = event.clientX - rect.left;
+            const offsetY = event.clientY - rect.top;
             const toLeft = (offsetX + currentEl.offsetWidth) > parentEl.offsetWidth
+            const toTop = (offsetY + currentEl.offsetHeight) > parentEl.offsetHeight
+            // console.log(event)
             if (toLeft) {
                 setLeft(parentEl.offsetWidth - currentEl.offsetWidth + parentEl.offsetLeft)
             } else {
                 setLeft(event.pageX)
             }
-            setTop(event.pageY)
+            if (toTop) {
+                setTop(parentEl.offsetHeight - currentEl.offsetHeight + parentEl.offsetTop)
+            } else {
+                setTop(event.pageY)
+            }
             setVisible(true)
         }
     }
