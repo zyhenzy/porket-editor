@@ -18,8 +18,8 @@ const ContextMenu: FC<ContextMenuProps> = () => {
     const [visible, setVisible] = useState(false);
     const [top, setTop] = useState(-9999)
     const [left, setLeft] = useState(-9999)
-    // const [toLeft,setToLeft] = useState(false) // 菜单偏左显示
-    // const [toTop,setToTop] = useState(false) // 菜单偏上显示
+    const [menuX, setMenuX] = useState(0) // 菜单位于父级元素X轴
+    const [menuY, setMenuY] = useState(0) // 菜单位于父级元素Y轴
 
     const menuRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
@@ -46,6 +46,8 @@ const ContextMenu: FC<ContextMenuProps> = () => {
             const rect = parentEl.getBoundingClientRect();
             const offsetX = event.clientX - rect.left;
             const offsetY = event.clientY - rect.top;
+            setMenuX(offsetX)
+            setMenuY(offsetY)
             const toLeft = (offsetX + currentEl.offsetWidth) > parentEl.offsetWidth
             const toTop = (offsetY + currentEl.offsetHeight) > parentEl.offsetHeight
             // console.log(event)
@@ -80,7 +82,7 @@ const ContextMenu: FC<ContextMenuProps> = () => {
                 top: `${top}px`,
             }}
         >
-            {menus.map(i => menuItem(i, menuRef))}
+            {menus.map(i => menuItem(i, menuRef, menuX, menuY))}
         </div>
     );
 };
@@ -89,8 +91,10 @@ const ContextMenu: FC<ContextMenuProps> = () => {
  * 菜单项组件
  * @param menu 菜单项数据
  * @param menuRef 主菜单节点
+ * @param menuX
+ * @param menuY
  */
-const menuItem = (menu: IMenu, menuRef: any) => {
+const menuItem = (menu: IMenu, menuRef: any, menuX: number, menuY: number) => {
     const menuItemHeight = 28
     const menuItemWidth = 130
     const editor = useSlate()
@@ -104,13 +108,9 @@ const menuItem = (menu: IMenu, menuRef: any) => {
     // 显示格式子菜单
     const handleShowFormat = () => {
         if (parentEl && subMenuRef.current && menuItemRef.current) {
-            // console.log(menuRef.current.offsetTop)
-            // console.log(menuItemRef.current.offsetTop)
-            // console.log(subMenuRef.current.offsetHeight)
-            // console.log(parentEl.offsetHeight)
             // fixme：算法不是很精准
-            const toBottom = (menuRef.current.offsetTop + menuItemRef.current.offsetTop + subMenuRef.current.offsetHeight - menuItemHeight) > parentEl.offsetHeight
-            const toLeft = (menuRef.current.offsetLeft + subMenuRef.current.offsetWidth) > parentEl.offsetWidth
+            const toBottom = (menuY + menuItemRef.current.offsetTop + subMenuRef.current.offsetHeight) > parentEl.offsetHeight
+            const toLeft = (menuX + subMenuRef.current.offsetWidth + subMenuRef.current.offsetWidth) > parentEl.offsetWidth
             if (toBottom) {
                 setTop(-subMenuRef.current.offsetHeight + menuItemHeight)
             } else {
@@ -169,7 +169,7 @@ const menuItem = (menu: IMenu, menuRef: any) => {
             left: `${left}px`,
             top: `${top}px`,
         }}>
-            {menu.children.map(i => menuItem(i, true))}
+            {menu.children.map(i => menuItem(i, true, menuX, menuY))}
         </div>}
     </div>
 }
