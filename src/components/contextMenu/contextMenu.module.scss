@@ -10,19 +10,27 @@
   border-radius: 4px;
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.08);
   background-color: #EFEBEE;
-  top: 400px;
-  right: 300px;
   font-size: 12px;
-  width: 170px;
-  .menuItem{
-    cursor: pointer;
-    box-sizing: border-box;
-    padding: 1px 40px 1px 2px;
-    border-radius: 2px;
-    width: 100%;
-    &:hover{
-      background-color: #4250F1;
-      color: #FFFFFF;
+
+  .menuItem {
+    position: relative;
+
+    .menuText {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-sizing: border-box;
+      padding: 0 6px;
+      border-radius: 2px;
+
+      &:hover {
+        background-color: #4250F1;
+        color: #FFFFFF;
+      }
     }
+
+
   }
 }
+

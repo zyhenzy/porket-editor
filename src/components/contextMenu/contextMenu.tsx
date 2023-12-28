@@ -20,7 +20,7 @@ const ContextMenu: FC<ContextMenuProps> = () => {
     const [left, setLeft] = useState(-9999)
     // const [toLeft,setToLeft] = useState(false) // 菜单偏左显示
     // const [toTop,setToTop] = useState(false) // 菜单偏上显示
-    const editor = useSlate()
+
     const menuRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
     useEffect(() => {
@@ -70,6 +70,66 @@ const ContextMenu: FC<ContextMenuProps> = () => {
         setVisible(false)
     }
 
+    return (
+        <div
+            ref={menuRef}
+            className={styles.contextMenu}
+            style={{
+                visibility: visible ? "inherit" : "hidden",
+                left: `${left}px`,
+                top: `${top}px`,
+            }}
+        >
+            {menus.map(i => menuItem(i, menuRef))}
+        </div>
+    );
+};
+
+/**
+ * 菜单项组件
+ * @param menu 菜单项数据
+ * @param menuRef 主菜单节点
+ */
+const menuItem = (menu: IMenu, menuRef: any) => {
+    const menuItemHeight = 28
+    const menuItemWidth = 130
+    const editor = useSlate()
+    const [showSubMenu, setShowSubMenu] = useState(false);
+    const [top, setTop] = useState(-4)
+    const [left, setLeft] = useState(130)
+    const menuItemRef: MutableRefObject<HTMLDivElement | null> = useRef(null); // 当前菜单项节点
+    const subMenuRef: MutableRefObject<HTMLDivElement | null> = useRef(null); // 子菜单节点
+    const parentEl = menuRef?.current?.parentElement
+
+    // 显示格式子菜单
+    const handleShowFormat = () => {
+        if (parentEl && subMenuRef.current && menuItemRef.current) {
+            // console.log(menuRef.current.offsetTop)
+            // console.log(menuItemRef.current.offsetTop)
+            // console.log(subMenuRef.current.offsetHeight)
+            // console.log(parentEl.offsetHeight)
+            // fixme：算法不是很精准
+            const toBottom = (menuRef.current.offsetTop + menuItemRef.current.offsetTop + subMenuRef.current.offsetHeight - menuItemHeight) > parentEl.offsetHeight
+            const toLeft = (menuRef.current.offsetLeft + subMenuRef.current.offsetWidth) > parentEl.offsetWidth
+            if (toBottom) {
+                setTop(-subMenuRef.current.offsetHeight + menuItemHeight)
+            } else {
+                setTop(-4)
+            }
+            if (toLeft) {
+                setLeft(-138)
+            } else {
+                setLeft(130)
+            }
+        }
+        setShowSubMenu(true);
+    };
+
+    // 隐藏格式子菜单
+    const handleHideFormat = () => {
+        setShowSubMenu(false);
+    };
+
     /**
      * 点击菜单项
      * @param menu
@@ -88,25 +148,31 @@ const ContextMenu: FC<ContextMenuProps> = () => {
         }
     }
 
-    return (
+    return <div ref={menuItemRef}
+                key={menu.value}
+                className={styles.menuItem}
+                onMouseEnter={() => handleShowFormat()}
+                onMouseLeave={() => handleHideFormat()}>
         <div
-            ref={menuRef}
-            className={styles.contextMenu}
+            className={styles.menuText}
+            onClick={(event) => handleMenuClick(menu, event)}
             style={{
-                visibility: visible ? "inherit" : "hidden",
-                left: `${left}px`,
-                top: `${top}px`,
+                height: `${menuItemHeight}px`,
+                width: `${menuItemWidth}px`
             }}
         >
-            {menus.map(i => {
-                return <div
-                    className={styles.menuItem}
-                    key={i.value}
-                    onClick={(event) => handleMenuClick(i, event)}
-                >{i.title}</div>
-            })}
+            <span>{menu.title}</span>
+            {menu.children && <span>～</span>}
         </div>
-    );
-};
+        {menu.children && <div ref={subMenuRef} className={`${styles.contextMenu} ${styles.subMenu}`} style={{
+            visibility: showSubMenu ? "inherit" : "hidden",
+            left: `${left}px`,
+            top: `${top}px`,
+        }}>
+            {menu.children.map(i => menuItem(i, true))}
+        </div>}
+    </div>
+}
+
 
 export default ContextMenu
