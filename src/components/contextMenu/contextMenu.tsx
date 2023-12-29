@@ -52,15 +52,15 @@ const ContextMenu: FC<ContextMenuProps> = ({areaRef}) => {
             const overScreen = event.clientY + menuRect.height > window.innerHeight // 是否超出屏幕
             const overArea = event.clientY + menuRect.height > areaRect.height + areaRect.top // 是否超出菜单使用区域
             if (overArea && overScreen) {
-                console.log('------俩都超出了------')
+                // console.log('------俩都超出了------')
                 const x1 = window.innerHeight - menuRect.height
                 const x2 = areaRect.height + areaRect.top - menuRect.height
                 setTop(x1 > x2 ? x2 : x1)
             } else if (overArea) {
-                console.log('------超出area触发------')
+                // console.log('------超出area触发------')
                 setTop(areaRect.height + areaRect.top - menuRect.height)
             } else if (overScreen) {
-                console.log('------超出屏幕触发------')
+                // console.log('------超出屏幕触发------')
                 setTop(window.innerHeight - menuRect.height)
             } else {
                 setTop(event.clientY)
@@ -114,19 +114,26 @@ const menuItem = (menu: IMenu, areaRef: any, menuRef: any) => {
     // 显示格式子菜单
     const handleShowFormat = () => {
         const menuEl = menuRef.current
+        const menuItemEl = menuItemRef.current
         const subMenuEl = subMenuRef.current
         const areaEl = areaRef.current
-        if (menuEl && areaEl && subMenuEl) {
+        if (menuEl && areaEl && subMenuEl && menuItemEl) {
             const areaRect = areaEl.getBoundingClientRect();
             const menuRect = menuEl.getBoundingClientRect();
+            const menuItemRect = menuItemEl.getBoundingClientRect();
             const subMenuRect = subMenuEl.getBoundingClientRect();
             if (menuRect.width + subMenuRect.width + menuRect.left > areaRect.width + areaRect.left) {
-                setLeft(-subMenuRect.width - 4)
+                setLeft(-subMenuRect.width)
             } else {
                 setLeft(menuItemWidth)
             }
-            if (subMenuRect.height + subMenuRect.top > areaRect.height + areaRect.top) {
-                const t = menuItemHeight - subMenuRect.height
+            const overScreen = menuItemRect.top + subMenuRect.height > window.innerHeight // 是否超出屏幕
+            const overArea = menuItemRect.top + subMenuRect.height > areaRect.height + areaRect.top // 是否超出菜单使用区域
+            if (overScreen) {
+                const t = menuItemHeight - subMenuRect.height+8
+                setTop(t)
+            } else if (overArea) {
+                const t = menuItemHeight - subMenuRect.height+8
                 setTop(t)
             } else {
                 setTop(0)
@@ -177,7 +184,7 @@ const menuItem = (menu: IMenu, areaRef: any, menuRef: any) => {
                 {(menu.children || menu.value === 'color') && <span>&rsaquo;</span>}
             </div>
 
-            {menu.line && <div className={styles.line}></div>}
+            {menu.line && <div className={styles.line}/>}
 
             {menu.children && <div ref={subMenuRef} className={styles.contextMenu} style={{
                 visibility: showSubMenu ? "inherit" : "hidden",
