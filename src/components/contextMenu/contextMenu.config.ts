@@ -1,28 +1,43 @@
 export interface IMenu {
     title: string,
     value: string,
-    type?:string // 特殊菜单类型
+    line?:boolean // 特殊菜单类型
     children?: IMenu[]
 }
 
 export const menus: IMenu[] = [
-    {title: '插入区域', value: 'add-area'},
-    {title: '插入文本控件', value: 'add-input',type:'line'},
-    {title: '颜色', value: 'color',type:'color'},
+    {title: '复制', value: 'fuzhi'},
+    {title: '粘贴', value: 'affix'},
+    {title: '在下方添加文本', value: 'add-bottom'},
+    {title: '插入图片', value: 'add-image'},
+    {title: '添加批注', value: 'add-comment'},
+    {title: '添加分页符', value: 'add-page-break'},
+    {title: '添加分割线', value: 'add-line'},
+    {title: '撤销', value: 'undo'},
+    {title: '恢复', value: 'redo',line:true},
     {
-        title: '主菜单2', value: 'main2', children: [
-            {title: '子菜单1', value: 'zi12'},
-            {title: '子菜单2', value: 'zi22'},
+        title: '格式', value: 'format', children: [
+            {title: '清除格式', value: 'clear-format'},
+            {title: '删除当前行', value: 'del-current-line'},
+            {title: '加粗', value: 'bold'},
+            {title: '斜体', value: 'italic'},
+            {title: '下划线', value: 'underline'},
+            {title: '上标', value: 'sup'},
+            {title: '下标', value: 'sub'},
         ]
     },
-    {title: 'S', value: 'italic'},
-    {title: 'I', value: 'underline'},
-    {title: 'U', value: 'code'},
+    {title: '颜色', value: 'color',line:true},
+    {title: '操作日志', value: 'logs'},
+    {title: '下载日志文件', value: 'down-logs'},
     {title: '测试函数', value: 'test'},
+    {title: '插入区域', value: 'add-area'},
+    {title: '插入文本控件', value: 'add-input'},
     {
         title: '主菜单', value: 'main', children: [
             {title: '子菜单1', value: 'zi1'},
             {title: '子菜单2', value: 'zi2'},
+            {title: '子菜单3', value: 'zi3'},
+            {title: '子菜单4', value: 'zi4'},
         ]
     },
 ]

@@ -49,9 +49,18 @@ const ContextMenu: FC<ContextMenuProps> = ({areaRef}) => {
             } else {
                 setLeft(event.clientX)
             }
-            if (event.clientY + menuRect.height > areaRect.height + areaRect.top) {
+            const overScreen = event.clientY + menuRect.height > window.innerHeight // 是否超出屏幕
+            const overArea = event.clientY + menuRect.height > areaRect.height + areaRect.top // 是否超出菜单使用区域
+            if (overArea && overScreen) {
+                console.log('------俩都超出了------')
+                const x1 = window.innerHeight - menuRect.height
+                const x2 = areaRect.height + areaRect.top - menuRect.height
+                setTop(x1 > x2 ? x2 : x1)
+            } else if (overArea) {
+                console.log('------超出area触发------')
                 setTop(areaRect.height + areaRect.top - menuRect.height)
-            } else if (event.clientY + menuRect.height > window.innerHeight) {
+            } else if (overScreen) {
+                console.log('------超出屏幕触发------')
                 setTop(window.innerHeight - menuRect.height)
             } else {
                 setTop(event.clientY)
@@ -168,7 +177,7 @@ const menuItem = (menu: IMenu, areaRef: any, menuRef: any) => {
                 {(menu.children || menu.value === 'color') && <span>&rsaquo;</span>}
             </div>
 
-            {menu.type === 'line' && <div className={styles.line}></div>}
+            {menu.line && <div className={styles.line}></div>}
 
             {menu.children && <div ref={subMenuRef} className={styles.contextMenu} style={{
                 visibility: showSubMenu ? "inherit" : "hidden",
