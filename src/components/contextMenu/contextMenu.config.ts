@@ -1,13 +1,14 @@
 export interface IMenu {
     title: string,
     value: string,
+    type?:string // 特殊菜单类型
     children?: IMenu[]
 }
 
 export const menus: IMenu[] = [
     {title: '插入区域', value: 'add-area'},
-    {title: '插入文本控件', value: 'add-input'},
-    {title: '颜色', value: 'color'},
+    {title: '插入文本控件', value: 'add-input',type:'line'},
+    {title: '颜色', value: 'color',type:'color'},
     {
         title: '主菜单2', value: 'main2', children: [
             {title: '子菜单1', value: 'zi12'},

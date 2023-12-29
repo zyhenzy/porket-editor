@@ -164,6 +164,9 @@ const menuItem = (menu: IMenu, areaRef: any, menuRef: any) => {
                 <span>{menu.title}</span>
                 {(menu.children||menu.value==='color') && <span>&rsaquo;</span>}
             </div>
+
+            {menu.type==='line'&&<div className={styles.line}></div>}
+
             {menu.children && <div ref={subMenuRef} className={styles.contextMenu} style={{
                 visibility: showSubMenu ? "inherit" : "hidden",
                 left: `${left}px`,
