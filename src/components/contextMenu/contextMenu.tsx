@@ -162,7 +162,7 @@ const menuItem = (menu: IMenu, menuRef: any, menuX: number, menuY: number) => {
             }}
         >
             <span>{menu.title}</span>
-            {menu.children && <span>～</span>}
+            {menu.children && <span>&rsaquo;</span>}
         </div>
         {menu.children && <div ref={subMenuRef} className={`${styles.contextMenu} ${styles.subMenu}`} style={{
             visibility: showSubMenu ? "inherit" : "hidden",
