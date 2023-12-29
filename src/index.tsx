@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React, {MutableRefObject, useCallback, useRef, useState} from 'react'
 import styles from './index.module.scss';
 import {createEditor, Transforms, Range} from 'slate'
 import {Slate, Editable, withReact} from 'slate-react'
@@ -58,6 +58,7 @@ const PorketEditor = (props: PorketEditorProps) => {
     const [editor] = useState(() => withInput(withReact(withHistory(withTrace(createEditor())))))
     const renderElement = useCallback((props: any) => <Element {...props} />, [])
     const renderLeaf = useCallback((props: any) => <Leaf {...props} />, [])
+    const editableRef = useRef(null);
 
     // 处理inline节点光标左移、右移跳转问题
     const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = event => {
@@ -89,8 +90,8 @@ const PorketEditor = (props: PorketEditorProps) => {
             <Toolbar editor={editor}/>
             <Slate editor={editor} initialValue={initialValue}>
                 <HoveringToolbar/>
-                <div>
-                    <ContextMenu/>
+                <div ref={editableRef}>
+                    <ContextMenu areaRef={editableRef}/>
                     <Editable className={styles.porketEditor} renderLeaf={renderLeaf} renderElement={renderElement}
                               onKeyDown={onKeyDown}/>
                 </div>

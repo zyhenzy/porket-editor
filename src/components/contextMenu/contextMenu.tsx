@@ -10,21 +10,23 @@ import {PEditor} from "../../porket";
 import {useSlate} from "slate-react";
 
 interface ContextMenuProps {
-    // editor: HistoryEditor;
+    areaRef: MutableRefObject<HTMLDivElement | null>
 }
 
-const ContextMenu: FC<ContextMenuProps> = () => {
+/**
+ * 自定义右键菜单
+ * @param areaRef 生效范围
+ * @constructor
+ */
+const ContextMenu: FC<ContextMenuProps> = ({areaRef}) => {
 
-    const [visible, setVisible] = useState(false);
-    const [top, setTop] = useState(-9999)
-    const [left, setLeft] = useState(-9999)
-    const [menuX, setMenuX] = useState(0) // 菜单位于父级元素X轴
-    const [menuY, setMenuY] = useState(0) // 菜单位于父级元素Y轴
-
+    const [visible, setVisible] = useState(true);
+    const [top, setTop] = useState(20)
+    const [left, setLeft] = useState(20)
     const menuRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
     useEffect(() => {
-        const parentEl = menuRef?.current?.parentElement
+        const parentEl = areaRef?.current
         // 右键事件监听
         parentEl?.addEventListener("contextmenu", showMenu)
         document.addEventListener("click", hideMenu)
@@ -36,33 +38,25 @@ const ContextMenu: FC<ContextMenuProps> = () => {
     }, [])
 
     const showMenu = (event: MouseEvent) => {
-        const currentEl = menuRef?.current
-        const parentEl = menuRef?.current?.parentElement
-        if (currentEl && parentEl) {
+        const areaEl = areaRef.current // 菜单使用范围
+        const menuEl = menuRef?.current // 菜单Dom
+        if (areaEl && menuEl) {
             event.preventDefault()
-            // 在 Chrome 浏览器中，layerX 和 offsetX 在右键点击事件上可能会出现差异。
-            // 这是因为右键点击事件的 offsetX 值是相对于触发事件的元素的内部坐标系，
-            // 而 layerX 的计算方式可能会受到鼠标指针相对于事件元素的祖先元素的影响。
-            const rect = parentEl.getBoundingClientRect();
-            const offsetX = event.clientX - rect.left;
-            const offsetY = event.clientY - rect.top;
-            setMenuX(offsetX)
-            setMenuY(offsetY)
-            const toLeft = (offsetX + currentEl.offsetWidth) > parentEl.offsetWidth
-            const toTop = (offsetY + currentEl.offsetHeight) > parentEl.offsetHeight
-            // console.log(event)
-            if (toLeft) {
-                setLeft(parentEl.offsetWidth - currentEl.offsetWidth + parentEl.offsetLeft)
+            const areaRect = areaEl.getBoundingClientRect();
+            const menuRect = menuEl.getBoundingClientRect();
+            if (event.clientX + menuRect.width > areaRect.width + areaRect.left) {
+                setLeft(areaRect.width + areaRect.left - menuRect.width)
             } else {
-                setLeft(event.pageX)
+                setLeft(event.clientX)
             }
-            if (toTop) {
-                setTop(parentEl.offsetHeight - currentEl.offsetHeight + parentEl.offsetTop)
+            if (event.clientY + menuRect.height > areaRect.height + areaRect.top) {
+                setTop(areaRect.height + areaRect.top - menuRect.height)
             } else {
-                setTop(event.pageY)
+                setTop(event.clientY)
             }
             setVisible(true)
         }
+
     }
 
     // 隐藏菜单
@@ -72,7 +66,7 @@ const ContextMenu: FC<ContextMenuProps> = () => {
         setVisible(false)
     }
 
-    return (
+    return ReactDOM.createPortal(
         <div
             ref={menuRef}
             className={styles.contextMenu}
@@ -82,47 +76,52 @@ const ContextMenu: FC<ContextMenuProps> = () => {
                 top: `${top}px`,
             }}
         >
-            {menus.map(i => menuItem(i, menuRef, menuX, menuY))}
-        </div>
+            {menus.map(i => menuItem(i, areaRef, menuRef))}
+        </div>,
+        document.body
     );
+
 };
 
 /**
  * 菜单项组件
  * @param menu 菜单项数据
- * @param menuRef 主菜单节点
- * @param menuX
- * @param menuY
+ * @param areaRef
+ * @param menuRef
  */
-const menuItem = (menu: IMenu, menuRef: any, menuX: number, menuY: number) => {
+const menuItem = (menu: IMenu, areaRef: any, menuRef: any) => {
     const menuItemHeight = 28
     const menuItemWidth = 130
     const editor = useSlate()
     const [showSubMenu, setShowSubMenu] = useState(false);
-    const [top, setTop] = useState(-4)
-    const [left, setLeft] = useState(130)
+    const [top, setTop] = useState(0)
+    const [left, setLeft] = useState(menuItemWidth)
     const menuItemRef: MutableRefObject<HTMLDivElement | null> = useRef(null); // 当前菜单项节点
     const subMenuRef: MutableRefObject<HTMLDivElement | null> = useRef(null); // 子菜单节点
-    const parentEl = menuRef?.current?.parentElement
 
     // 显示格式子菜单
     const handleShowFormat = () => {
-        if (parentEl && subMenuRef.current && menuItemRef.current) {
-            // fixme：算法不是很精准
-            const toBottom = (menuY + menuItemRef.current.offsetTop + subMenuRef.current.offsetHeight) > parentEl.offsetHeight
-            const toLeft = (menuX + subMenuRef.current.offsetWidth + subMenuRef.current.offsetWidth) > parentEl.offsetWidth
-            if (toBottom) {
-                setTop(-subMenuRef.current.offsetHeight + menuItemHeight)
+        const menuEl = menuRef.current
+        const subMenuEl = subMenuRef.current
+        const areaEl = areaRef.current
+        if (menuEl && areaEl && subMenuEl) {
+            const areaRect = areaEl.getBoundingClientRect();
+            const menuRect = menuEl.getBoundingClientRect();
+            const subMenuRect = subMenuEl.getBoundingClientRect();
+            if (menuRect.width * 2 + menuRect.left > areaRect.width + areaRect.left) {
+                setLeft(-menuItemWidth - 4)
             } else {
-                setTop(-4)
+                setLeft(menuItemWidth)
             }
-            if (toLeft) {
-                setLeft(-138)
+            if (subMenuRect.height + subMenuRect.top > areaRect.height + areaRect.top) {
+                const t = menuItemHeight - subMenuRect.height
+                setTop(t)
             } else {
-                setLeft(130)
+                setTop(0)
             }
+
+            setShowSubMenu(true);
         }
-        setShowSubMenu(true);
     };
 
     // 隐藏格式子菜单
@@ -169,10 +168,12 @@ const menuItem = (menu: IMenu, menuRef: any, menuX: number, menuY: number) => {
             left: `${left}px`,
             top: `${top}px`,
         }}>
-            {menu.children.map(i => menuItem(i, true, menuX, menuY))}
+            {menu.children.map(i => menuItem(i, areaRef, menuRef))}
         </div>}
     </div>
 }
+
+
 
 
 export default ContextMenu
