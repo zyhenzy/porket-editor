@@ -129,11 +129,8 @@ const menuItem = (menu: IMenu, areaRef: any, menuRef: any) => {
             }
             const overScreen = menuItemRect.top + subMenuRect.height > window.innerHeight // 是否超出屏幕
             const overArea = menuItemRect.top + subMenuRect.height > areaRect.height + areaRect.top // 是否超出菜单使用区域
-            if (overScreen) {
-                const t = menuItemHeight - subMenuRect.height+8
-                setTop(t)
-            } else if (overArea) {
-                const t = menuItemHeight - subMenuRect.height+8
+            if (overScreen || overArea) {
+                const t = menuItemHeight - subMenuRect.height + 8
                 setTop(t)
             } else {
                 setTop(0)
