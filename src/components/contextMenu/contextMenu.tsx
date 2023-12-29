@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import styles from "./contextMenu.module.scss";
 import React from "react";
 import {HistoryEditor} from "slate-history";
-import {menus} from "./contextMenu.config";
+import {colorBack, colorFont, menus} from "./contextMenu.config";
 import type {IMenu} from "./contextMenu.config";
 import {PEditor} from "../../porket";
 import {useSlate} from "slate-react";
@@ -108,8 +108,8 @@ const menuItem = (menu: IMenu, areaRef: any, menuRef: any) => {
             const areaRect = areaEl.getBoundingClientRect();
             const menuRect = menuEl.getBoundingClientRect();
             const subMenuRect = subMenuEl.getBoundingClientRect();
-            if (menuRect.width * 2 + menuRect.left > areaRect.width + areaRect.left) {
-                setLeft(-menuItemWidth - 4)
+            if (menuRect.width + subMenuRect.width + menuRect.left > areaRect.width + areaRect.left) {
+                setLeft(-subMenuRect.width - 4)
             } else {
                 setLeft(menuItemWidth)
             }
@@ -147,33 +147,101 @@ const menuItem = (menu: IMenu, areaRef: any, menuRef: any) => {
         }
     }
 
-    return <div ref={menuItemRef}
-                key={menu.value}
-                className={styles.menuItem}
-                onMouseEnter={() => handleShowFormat()}
-                onMouseLeave={() => handleHideFormat()}>
-        <div
-            className={styles.menuText}
-            onClick={(event) => handleMenuClick(menu, event)}
-            style={{
-                height: `${menuItemHeight}px`,
-                width: `${menuItemWidth}px`
-            }}
-        >
-            <span>{menu.title}</span>
-            {menu.children && <span>&rsaquo;</span>}
+    return (
+        <div ref={menuItemRef}
+             key={menu.value}
+             className={styles.menuItem}
+             onMouseEnter={() => handleShowFormat()}
+             onMouseLeave={() => handleHideFormat()}>
+            <div
+                className={styles.menuText}
+                onClick={(event) => handleMenuClick(menu, event)}
+                style={{
+                    height: `${menuItemHeight}px`,
+                    width: `${menuItemWidth}px`
+                }}
+            >
+                <span>{menu.title}</span>
+                {(menu.children||menu.value==='color') && <span>&rsaquo;</span>}
+            </div>
+            {menu.children && <div ref={subMenuRef} className={styles.contextMenu} style={{
+                visibility: showSubMenu ? "inherit" : "hidden",
+                left: `${left}px`,
+                top: `${top}px`,
+            }}>
+                {menu.children.map(i => menuItem(i, areaRef, menuRef))}
+            </div>}
+            {menu.value === 'color' &&
+            <div
+                ref={subMenuRef}
+                className={styles.colorMenu}
+                style={{
+                    visibility: showSubMenu ? "inherit" : "hidden",
+                    left: `${left}px`,
+                    top: `${top}px`,
+                }}>
+                {colorMenu()}
+            </div>
+            }
         </div>
-        {menu.children && <div ref={subMenuRef} className={`${styles.contextMenu} ${styles.subMenu}`} style={{
-            visibility: showSubMenu ? "inherit" : "hidden",
-            left: `${left}px`,
-            top: `${top}px`,
-        }}>
-            {menu.children.map(i => menuItem(i, areaRef, menuRef))}
-        </div>}
-    </div>
+    )
 }
 
+// 颜色菜单
+const colorMenu = () => {
+    /**
+     * 设置字体颜色
+     * @param hex
+     */
+    const handleColor = (hex: string) => {
 
+    };
+
+    /**
+     * 设置背景颜色
+     * @param hex
+     */
+    const handleBackColor = (hex: string) => {
+
+    };
+
+    /**
+     * 清除颜色
+     */
+    const handleClearColor = () => {
+
+    };
+
+    return <>
+        <div className={styles.colorBox}>
+            {colorFont.map((item) => {
+                return (
+                    <div
+                        className={styles.fontColorItem}
+                        key={item.value}
+                        style={{color: item.value}}
+                        onClick={() => handleColor(item.value)}
+                    >
+                        A
+                    </div>
+                );
+            })}
+        </div>
+        <div className={styles.colorBox}>
+            {colorBack.map((item) => {
+                return (
+                    <div
+                        className={styles.backColorItem}
+                        key={item.value}
+                        style={{backgroundColor: item.value}}
+                        onClick={() => handleBackColor(item.value)}
+                    />
+                );
+            })}
+        </div>
+        <div className={styles.clearBtn} onClick={() => handleClearColor()}>清除颜色</div>
+    </>
+}
 
 
 export default ContextMenu
