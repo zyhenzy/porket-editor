@@ -20,7 +20,7 @@ interface ContextMenuProps {
  */
 const ContextMenu: FC<ContextMenuProps> = ({areaRef}) => {
 
-    const [visible, setVisible] = useState(true);
+    const [visible, setVisible] = useState(false);
     const [top, setTop] = useState(20)
     const [left, setLeft] = useState(20)
     const menuRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
@@ -88,7 +88,7 @@ const ContextMenu: FC<ContextMenuProps> = ({areaRef}) => {
                 top: `${top}px`,
             }}
         >
-            {menus.map(i => menuItem(i, areaRef, menuRef))}
+            {menus.map(i => <MenuItem menu={i} areaRef={areaRef} menuRef={menuRef} key={i.value}/>)}
         </div>,
         document.body
     );
@@ -101,7 +101,7 @@ const ContextMenu: FC<ContextMenuProps> = ({areaRef}) => {
  * @param areaRef
  * @param menuRef
  */
-const menuItem = (menu: IMenu, areaRef: any, menuRef: any) => {
+const MenuItem = ({menu,areaRef,menuRef}:{menu: IMenu, areaRef: any, menuRef: any}) => {
     const menuItemHeight = 28
     const menuItemWidth = 130
     const editor = useSlate()
@@ -188,7 +188,7 @@ const menuItem = (menu: IMenu, areaRef: any, menuRef: any) => {
                 left: `${left}px`,
                 top: `${top}px`,
             }}>
-                {menu.children.map(i => menuItem(i, areaRef, menuRef))}
+                {menu.children.map(i => <MenuItem menu={i} areaRef={areaRef} menuRef={menuRef} key={i.value} />)}
             </div>}
             {menu.value === 'color' &&
             <div
