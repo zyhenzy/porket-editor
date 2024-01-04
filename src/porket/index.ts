@@ -16,6 +16,7 @@ export const PEditor = {
     addArea(editor: Editor) {
         // @ts-ignore
         const [areaTuple] = Editor.nodes(editor, {
+            // @ts-ignore
             match: n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'area',
         })
         const inArea = !!areaTuple
@@ -28,13 +29,14 @@ export const PEditor = {
             editor,
             area,
             {
+                // @ts-ignore
                 match: n => Element.isElement(n) && n.type === 'paragraph',
                 split: true,
             }
         )
     },
     /**
-     * 添加区域
+     * 添加文本控件
      * @param editor
      */
     addInput(editor: Editor) {
@@ -56,11 +58,12 @@ export const PEditor = {
      * @param editor
      */
     test(editor:Editor){
-        const g = Node.descendants(editor,{
-            // @ts-ignore
-            pass: ([node]) => node.type === 'area'
-        })
-        console.log(Array.from(g))
+        // const g = Node.descendants(editor,{
+        //     // @ts-ignore
+        //     pass: ([node]) => node.type === 'area'
+        // })
+        // console.log(Array.from(g))
+        console.log(editor.children)
     },
     /**
      * 撤销功能

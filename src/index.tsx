@@ -11,6 +11,7 @@ import Element from "./render/Element";
 import HoveringToolbar from "./components/hoveringToolbar/hoveringToolbar";
 import withInput from "./porket/porket-input/input-plugin";
 import {isKeyHotkey} from 'is-hotkey'
+import withArea from "./porket/porket-area/area-plugin";
 
 interface PorketEditorProps {
     children: string;  // 要绘制的文本
@@ -55,7 +56,7 @@ const initialValue = [
  * @constructor
  */
 const PorketEditor = (props: PorketEditorProps) => {
-    const [editor] = useState(() => withInput(withReact(withHistory(withTrace(createEditor())))))
+    const [editor] = useState(() => withArea(withInput(withReact(withHistory(withTrace(createEditor()))))))
     const renderElement = useCallback((props: any) => <Element {...props} />, [])
     const renderLeaf = useCallback((props: any) => <Leaf {...props} />, [])
     const editableRef = useRef(null);
