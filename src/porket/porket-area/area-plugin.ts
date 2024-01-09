@@ -1,19 +1,16 @@
 const withArea = (editor:any) => {
-    // const { isInline, isVoid, markableVoid } = editor
-
-    // editor.isInline = (element:any) => {
-    //     return element.type === 'area' ? true : isInline(element)
+    // const { isVoid, isBlockCard } = editor;
+    // // ...
+    // editor.isBlockCard = (element: Element) => {
+    //     // @ts-ignore
+    //     if (element.type === 'area') {
+    //         console.log(element)
+    //         console.log('------run------')
+    //         return true;
+    //     }
+    //     return isBlockCard(element);
     // }
-
-    // editor.isVoid = (element:any) => {
-    //     return element.type === 'input' ? true : isVoid(element)
-    // }
-
-    // editor.markableVoid = (element:any) => {
-    //     return element.type === 'input' || markableVoid(element)
-    // }
-
-    return editor
+    return editor;
 }
 
 export default withArea
